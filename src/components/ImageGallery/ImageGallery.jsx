@@ -7,33 +7,7 @@ import styles from '../ImageGallery/ImageGallery.module.css';
 import API from '../../services/pixabayservices';
 import Button from '../Button/Button';
 import Loader from '../Loader/Loader';
-/* import PropTypes from 'prop-types';
-import API from './services/pixabayservices';
 
-const newsApi = new API();
-import ContactListItem from '../ContactListItem/ContactListItem';
-
-import { ListStyle } from './ContactList.styled';
-
-const ContactList = ({ visibleContact, onDeleteContact }) => {
-  return (
-    <ul>
-      {visibleContact.map(({ name, id, number }) => {
-        return (
-          <ContactListItem key={id} data={{ number, name, id }} onDeleteContact={onDeleteContact} />
-        );
-      })}
-    </ul>
-  );
-};
-
-export default ContactList; */
-
-/* ContactList.propTypes = {
-  visibleContact: PropTypes.array.isRequired,
-  onDeleteContact: PropTypes.func.isRequired,
-};
- */
 const newsApi = new API();
 
 export default class ImageGallery extends Component {
@@ -41,7 +15,6 @@ export default class ImageGallery extends Component {
     picture: null,
     loading: false,
     error: null,
-    status: 'idle',
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -61,6 +34,7 @@ export default class ImageGallery extends Component {
             toast.error('Sorry, there are no images matching your search query. Please try again.');
             return;
           }
+          this.props.largestPicture(this.state.picture);
         })
         .catch(error => this.setState({ error }))
         .finally(() => this.setState({ loading: false }));
@@ -69,7 +43,7 @@ export default class ImageGallery extends Component {
 
   fetchMorePictures = () => {
     const { picture } = this.state;
-    /* this.setState({ loading: false }); */
+
     this.setState({ loading: true });
     return newsApi
       .fetchImages()
@@ -79,6 +53,7 @@ export default class ImageGallery extends Component {
           toast.error('Sorry, there are no more images matching your search.');
           return;
         }
+        this.props.largestPicture(this.state.picture);
       })
       .catch(error => this.setState({ error }))
       .finally(() => this.setState({ loading: false }));
@@ -86,35 +61,20 @@ export default class ImageGallery extends Component {
 
   render() {
     const { picture, loading } = this.state;
-    /* if (status === 'idle') {
-      return;
-    }
-
-    if (status === 'pending') {
-      return <Loader></Loader>;
-    } */
-
-    /* if (status === 'resolved') {
-      return (
-        <>
-          <ul className={styles.ImageGallery}>
-            {console.log(picture)}
-            {picture.map(({ id, webformatURL, tags }, index) => {
-              return <ImageGalleryItem key={index} data={{ webformatURL, tags }} />;
-            })}
-          </ul>
-          <Button pagination={this.fetchMorePictures}></Button>
-        </>
-      );
-    } */
+    const { ImageGallery } = styles;
 
     return (
       <>
-        <ul className={styles.ImageGallery}>
-          {console.log(picture)}
+        <ul className={ImageGallery}>
           {picture &&
-            picture.map(({ id, webformatURL, tags }, index) => {
-              return <ImageGalleryItem key={index} data={{ webformatURL, tags }} />;
+            picture.map(({ largeImageURL, webformatURL, tags }, index) => {
+              return (
+                <ImageGalleryItem
+                  key={index}
+                  data={{ largeImageURL, webformatURL, tags }}
+                  largePicture={this.props.onClick}
+                />
+              );
             })}
         </ul>
         {picture && <Button pagination={this.fetchMorePictures}></Button>}

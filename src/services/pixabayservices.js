@@ -6,7 +6,6 @@ export default class NewsApiService {
   }
 
   fetchImages() {
-    //console.log(this)
     const fetchImages = fetch(
       `https://pixabay.com/api/?key=24371516-b10d2b2a42c8e4a8969a3fdf2&q=${this.searchName}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${this.perPage}&page=${this.page}`,
     ).then(response => {

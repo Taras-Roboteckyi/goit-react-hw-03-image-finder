@@ -1,14 +1,13 @@
-/* import PropTypes from 'prop-types'; */
+import PropTypes from 'prop-types';
 import styles from '../ImageGalleryItem/ImageGalleryItem.module.css';
-/* import { ListItemStyle, NameContactStyle, ButtonContactStyle } from './ContactListItem.styled'; */
 
-const ImageGalleryItem = ({ data }) => {
-  const { webformatURL, tags } = data;
+const ImageGalleryItem = ({ data, largePicture }) => {
+  const { webformatURL, tags, largeImageURL } = data;
 
   /* console.log(data); */
   const { ImageGalleryItem, ImageGalleryItemImage } = styles;
   return (
-    <li className={ImageGalleryItem}>
+    <li className={ImageGalleryItem} onClick={() => largePicture(largeImageURL)}>
       <img className={ImageGalleryItemImage} src={webformatURL} alt={tags} />
     </li>
   );
@@ -16,12 +15,11 @@ const ImageGalleryItem = ({ data }) => {
 
 export default ImageGalleryItem;
 
-/* ContactListItem.propTypes = {
+ImageGalleryItem.propTypes = {
   data: PropTypes.shape({
-    number: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
+    webformatURL: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
   }),
-  onDeleteContact: PropTypes.func.isRequired,
+  largePicture: PropTypes.func.isRequired,
 };
- */
