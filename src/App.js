@@ -62,21 +62,6 @@ export default class App extends Component {
       })
       .catch(error => this.setState({ error }))
       .finally(() => this.setState({ loading: false }));
-
-    /* const { picture } = this.state;
-
-    this.setState({ loading: true });
-    return newsApi
-      .fetchImages()
-      .then(({ hits }) => {
-        this.setState({ picture: [...picture, ...hits] });
-        if (hits.length === 0) {
-          toast.error('Sorry, there are no more images matching your search.');
-          return;
-        }
-      })
-      .catch(error => this.setState({ error }))
-      .finally(() => this.setState({ loading: false })); */
   };
 
   formSubmitHandler = data => {
@@ -126,52 +111,3 @@ export default class App extends Component {
     );
   }
 }
-
-/* class App extends Component {
-  state = {
-    images: [],
-    currentPage: 1,
-    searchQuery: '',
-    showModal: false,
-    isLoading: false,
-    error: null,
-    total: 0,
-    modalImage: '',
-  };
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.searchQuery !== this.state.searchQuery) {
-      this.fetchImg();
-    }
-  }
-
-  fetchImg = () => {
-    const { currentPage, searchQuery } = this.state;
-    const options = { searchQuery, currentPage };
-
-    if (!searchQuery) {
-      return;
-    }
-
-    this.setState({ isLoading: true });
-
-    ImageApi.fetchImg(options)
-      .then(hits => {
-        console.log(hits.length);
-        this.setState(prevState => ({
-          images: [...prevState.images, ...hits],
-          currentPage: prevState.currentPage + 1,
-          total: hits.length,
-        }));
-
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: 'smooth',
-        });
-      })
-      .catch(error => this.setState({ error }))
-      .finally(() => {
-        this.setState({ isLoading: false });
-      });
-  };
-} */
