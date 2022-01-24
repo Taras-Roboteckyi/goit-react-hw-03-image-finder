@@ -28,8 +28,11 @@ export default class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     const prevName = prevState.pictureName;
     const nextName = this.state.pictureName;
+
     if (nextName !== prevName) {
-      this.setState({ picture: [], scroll: false });
+      newsApi.resetPage();
+      this.setState({ picture: [] });
+      this.setState({ scroll: false });
 
       this.fetchMorePictures();
     }
@@ -41,14 +44,18 @@ export default class App extends Component {
     this.setState({ loading: true, scroll: true });
 
     newsApi.query = pictureName;
-    console.log(this.state.pictureName);
+    //console.log(this.state.pictureName);
 
     newsApi
       .fetchImages()
       .then(({ hits }) => {
-        console.log(hits);
+        //console.log(hits.length);
 
-        this.setState(prevState => ({ picture: [...prevState.picture, ...hits], image: true }));
+        this.setState(prevState => ({
+          picture: [...prevState.picture, ...hits],
+          image: true,
+        }));
+
         if (hits.length === 0) {
           toast.error('Sorry, there are no more images matching your search.');
           return;
@@ -87,7 +94,9 @@ export default class App extends Component {
 
         {image && <ImageGallery picture={picture} onClick={this.toggleModal}></ImageGallery>}
 
-        {picture.length > 0 && <Button pagination={this.fetchMorePictures}></Button>}
+        {picture.length > 0 && picture.length % 12 === 0 && (
+          <Button pagination={this.fetchMorePictures}></Button>
+        )}
         {loading && <Loader></Loader>}
 
         {showModal && (
